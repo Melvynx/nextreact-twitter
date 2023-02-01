@@ -80,11 +80,11 @@ const LikeUpdate = ({
             if (!old) {
               return old;
             }
-            const tweets = old.pages.flatMap((page) => page.tweets);
             return {
-              pages: [fakeUpdateTweet(tweetId, liked, { tweets })],
-            } satisfies {
-              pages: TlTweetsPage[];
+              pages: old.pages.map((page) => ({
+                ...page,
+                ...fakeUpdateTweet(tweetId, liked, { tweets: page.tweets }),
+              })),
             };
           }
         );
@@ -99,7 +99,12 @@ const LikeUpdate = ({
           context?.previousValue
         );
       } else {
-        queryClient.setQueryData(tweetKeys.all, context?.previousValue);
+        void queryClient.invalidateQueries({
+          queryKey: tweetKeys.all,
+          refetchPage: (lastPage: TlTweetsPage) => {
+            return lastPage.tweets.some((tweet) => tweet.id === tweetId);
+          },
+        });
       }
       notifyFailed();
     },

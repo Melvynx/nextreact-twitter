@@ -94,29 +94,23 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
             return old;
           }
           return {
-            pages: old.pages.map((page) => {
-              if (!page.tweets.some((t) => t.id === tweetId)) {
-                return page;
-              }
+            pages: old.pages.map((page) => ({
+              ...page,
+              tweets: page.tweets.map((tweet) => {
+                if (tweet.id !== tweetId) {
+                  return tweet;
+                }
 
-              return {
-                ...page,
-                tweets: page.tweets.map((tweet) => {
-                  if (tweet.id !== tweetId) {
-                    return tweet;
-                  }
-
-                  return {
-                    ...tweet,
-                    liked: !liked,
-                    _count: {
-                      ...tweet._count,
-                      likes: tweet._count.likes + (liked ? -1 : 1),
-                    },
-                  };
-                }),
-              };
-            }),
+                return {
+                  ...tweet,
+                  liked: !liked,
+                  _count: {
+                    ...tweet._count,
+                    likes: tweet._count.likes + (liked ? -1 : 1),
+                  },
+                };
+              }),
+            })),
           };
         }
       );
