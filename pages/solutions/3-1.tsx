@@ -5,8 +5,9 @@ import { Error } from '~/components/Error';
 import { Loader } from '~/components/Loader';
 import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetsNextButton } from '~/components/tweets/TweetsNextButton';
+import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
-import { useInfiniteTweets } from '~/lib/tweets/query.tweet';
+import { tweetKeys, useInfiniteTweets } from '~/lib/tweets/query.tweet';
 import { Like } from '../../src/components/tweets/Like';
 import { Replies } from '../../src/components/tweets/Replies';
 import { Tweet } from '../../src/components/tweets/Tweet';
@@ -70,6 +71,7 @@ type LikeUpdateProps = {
 
 const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useUser();
 
   const queryClient = useQueryClient();
 
@@ -77,7 +79,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
     setIsLoading(true);
     likeTweet(tweetId, liked)
       .then(() => {
-        void queryClient.invalidateQueries(['tweets']);
+        void queryClient.invalidateQueries(tweetKeys.all);
       })
       .catch(() => {
         notifyFailed();
@@ -89,6 +91,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
 
   return (
     <Like
+      disabled={isLoading || !user}
       count={count}
       onClick={() => {
         if (isLoading) {

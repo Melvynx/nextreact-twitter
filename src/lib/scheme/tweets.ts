@@ -22,13 +22,14 @@ export const TweetsScheme = z.object({
   nextPage: z.number().optional().nullable(),
 });
 
+export type TlTweetsPage = z.infer<typeof TweetsScheme>;
 export type TlTweets = z.infer<typeof TweetsScheme>['tweets'];
 export type TlTweet = TlTweets[number];
 
 // Extends TlTweetScheme to add `replies` property
 export const TweetScheme = z.object({
   tweet: TlTweetScheme.extend({
-    replies: z.array(TlTweetScheme),
+    replies: z.array(TlTweetScheme).optional(),
   }),
 });
 

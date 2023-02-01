@@ -68,33 +68,22 @@ type LikeUpdateProps = {
   liked: boolean;
 };
 
-const LikeUpdate = ({
-  count,
-  liked,
-  tweetId,
-}: {
-  tweetId: string;
-  count: number;
-  liked?: boolean;
-}) => {
+const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
+  // 🦁 Créer un state isLoading
   // 🦁 Utilise useQueryClient
 
-  // 🦁 Ajoute un hooks useMutation qui va
+  // 🦁 Ajoute la fonction onClick
+  // * met isLoading à true
   // * utiliser la fonction likeTweet
-  // * utilise le paramètre `onMutate` pour mettre à jour le cache
-  //   * utilise la même syntaxe que dans mon cours
-  //   * invalid le cache de la query `tweets`
-  //   * utilise `queryClient.getQueryData` pour récupérer le cache et le stocker dans une variable
-  //   * utilise `queryClient.setQueryData` pour mettre à jour le cache en fonction de liked
-  // * utilise le paramètre `onError` pour afficher une notification d'erreur et rollback le cache
-  //   * tu peux utiliser la fonction `notifyFailed`
-  // * utilise le paramètre `onSuccess` pour invalider le cache de la query `tweets`
+  // * si c'est un succès (`.then`) : invalidé la query des tweets (tu pourras trouver la clé dans [query.tweet.ts](src/lib/tweets/query.tweet.ts) et l'importer)
+  // * si c'est un échec (`.catch`) : affiché un message d'erreur
+  // * finalement (`.finally`) on va définir le state `isLoading` à false et le mettre à true pendant
 
   return (
     <Like
       count={count}
       onClick={() => {
-        // 🦁 Appel la fonction mutate de la mutation
+        // 🦁 Appel la fonction onClick
       }}
       liked={liked}
     />

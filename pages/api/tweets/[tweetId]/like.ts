@@ -10,10 +10,20 @@ const ParamsScheme = z.object({
   tweetId: z.string(),
 });
 
+const QueryScheme = z.object({
+  error: z.string().optional(),
+});
+
 export default apiHandler({
   endpoints: {
     POST: async (req, res) => {
       await wait(1000);
+
+      const { error } = QueryScheme.parse(req.query);
+
+      if (error) {
+        throw new Error(error);
+      }
 
       const { tweetId } = ParamsScheme.parse(req.query);
       const userId = getUserIdInCookie(req);
@@ -31,6 +41,12 @@ export default apiHandler({
     },
     DELETE: async (req, res) => {
       await wait(1000);
+
+      const { error } = QueryScheme.parse(req.query);
+
+      if (error) {
+        throw new Error(error);
+      }
 
       const { tweetId } = ParamsScheme.parse(req.query);
       const userId = getUserIdInCookie(req);
