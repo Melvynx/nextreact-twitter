@@ -19,7 +19,7 @@ const TlTweetScheme = z.object({
 
 export const TweetsScheme = z.object({
   tweets: z.array(TlTweetScheme),
-  nextPage: z.number().optional(),
+  nextPage: z.number().optional().nullable(),
 });
 
 export type TlTweets = z.infer<typeof TweetsScheme>['tweets'];

@@ -19,7 +19,7 @@ const GrowingTextArea = ({
       return;
     }
     textareaRef.current.style.height = 'auto';
-    textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
   }, [value]);
 
   return (

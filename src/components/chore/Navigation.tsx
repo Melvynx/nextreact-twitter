@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Link from 'next/link';
+import type { PropsWithChildren } from 'react';
 
 type ExerciseProps = {
   number: number;
@@ -11,7 +12,8 @@ export default function Exercise({
   number,
   solutionCount,
   baseUrl = '',
-}: ExerciseProps) {
+  children,
+}: PropsWithChildren<ExerciseProps>) {
   // generate an array from 1 to solutionCount
   const solutions = Array.from({ length: solutionCount }, (_, i) => i + 1);
 
@@ -24,17 +26,37 @@ export default function Exercise({
         Exercise {number}
       </Link>
       {solutions.map((solution) => (
-        <Link
+        <SolutionLink
           key={solution}
-          href={`/solutions${baseUrl}/${number}-${solution}`}
-          className="hover:underline"
-        >
-          Solution {number} parti {solution}
-        </Link>
+          number={number}
+          solution={String(solution)}
+          baseUrl={baseUrl}
+        />
       ))}
+      {children}
     </div>
   );
 }
+
+type SolutionLinkProps = {
+  number: number;
+  solution: string;
+  baseUrl?: string;
+};
+
+export const SolutionLink = ({
+  number,
+  solution,
+  baseUrl = '',
+}: SolutionLinkProps) => (
+  <Link
+    key={solution}
+    href={`/solutions${baseUrl}/${number}-${solution}`}
+    className="hover:underline"
+  >
+    Solution {number} parti {solution}
+  </Link>
+);
 
 export const NavigationLink = ({
   href,

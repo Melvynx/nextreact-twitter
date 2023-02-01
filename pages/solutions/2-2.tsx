@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { Error } from '~/components/Error';
 import { Loader } from '~/components/Loader';
-import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
 import { AddTweetForm } from '../../src/components/tweets/AddTweetForm';
 import { Like } from '../../src/components/tweets/Like';
@@ -9,13 +10,18 @@ import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
 import { TweetsScheme } from '../../src/lib/scheme/tweets';
 
+const notifyFailed = () => toast.error("Couldn't fetch tweet...");
+
 const getTweets = async (signal?: AbortSignal) =>
   client(`/api/tweets`, { signal, zodSchema: TweetsScheme });
 
 export default function FetchAllTweets() {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['tweets'],
     queryFn: ({ signal }) => getTweets(signal),
+    onError: () => {
+      notifyFailed();
+    },
   });
 
   if (isLoading) {
@@ -23,7 +29,7 @@ export default function FetchAllTweets() {
   }
 
   if (isError) {
-    return <p>An error occurred.</p>;
+    return <Error error="Couldn't fetch tweet..." reset={() => refetch()} />;
   }
 
   // we know that tweets is defined
@@ -43,7 +49,6 @@ export default function FetchAllTweets() {
 }
 
 const AddTweet = () => {
-  const { user } = useUser();
   const queryClient = useQueryClient();
   const mutation = useMutation(
     (content: string) =>
@@ -56,10 +61,6 @@ const AddTweet = () => {
       },
     }
   );
-
-  if (!user) {
-    return <p>Please login to add tweet</p>;
-  }
 
   const handleSubmit = (content: string) => {
     mutation.mutate(content);

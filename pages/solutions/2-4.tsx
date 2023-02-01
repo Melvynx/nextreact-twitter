@@ -16,9 +16,13 @@ import { TweetsScheme } from '../../src/lib/scheme/tweets';
 const getTweets = async (signal?: AbortSignal, page = 0) =>
   client(`/api/tweets?page=${page}`, { signal, zodSchema: TweetsScheme });
 
+const tweetKeys = {
+  all: ['tweets'],
+};
+
 const useInfiniteTweet = () =>
   useInfiniteQuery({
-    queryKey: ['tweets'],
+    queryKey: tweetKeys.all,
     queryFn: ({ signal, pageParam }) => getTweets(signal, pageParam),
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
@@ -70,7 +74,7 @@ const AddTweet = () => {
     {
       onSuccess: () => {
         void queryClient.invalidateQueries({
-          queryKey: ['tweets'],
+          queryKey: tweetKeys.all,
         });
       },
     }

@@ -32,8 +32,8 @@ export default apiHandler({
       const tweets = await getTweets(userId, page);
 
       res.status(200).json({
-        tweets: error ? tweets.map((t) => error) : tweets, // for testing purpose
-        nextPage: page + 1,
+        tweets: error ? tweets.map(() => error) : tweets, // for testing purpose
+        nextPage: tweets.length !== 0 ? page + 1 : null,
       });
     },
     POST: async (req, res) => {

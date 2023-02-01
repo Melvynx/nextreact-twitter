@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
+import clsx from 'clsx';
 import Link from 'next/link';
-import { Fragment, PropsWithChildren } from 'react';
-import { TlTweet } from '~/lib/scheme/tweets';
+import type { PropsWithChildren } from 'react';
+import { Fragment } from 'react';
+import type { TlTweet } from '~/lib/scheme/tweets';
 import { formatDate } from '../../lib/date/formatDate';
 
 type TweetProps = {
@@ -21,6 +23,7 @@ type TweetBaseProps = {
   user: TlTweet['user'];
   createdAt?: string;
   tweetId?: string;
+  className?: string;
 };
 
 export const TweetBase = ({
@@ -28,11 +31,12 @@ export const TweetBase = ({
   createdAt,
   children,
   tweetId,
+  className,
 }: PropsWithChildren<TweetBaseProps>) => {
   const LinkComponent = tweetId ? Link : Fragment;
-  const props = tweetId ? { href: `/routing/tweets/${tweetId}` } : ({} as any);
+  const props = tweetId ? { href: `/routing/tweets/${tweetId}` } : ({} as never);
   return (
-    <div className="flex flex-row items-start w-full p-4">
+    <div className={clsx('flex flex-row items-start w-full p-4', className)}>
       <img
         src={user.avatarUrl ?? ''}
         alt="user"

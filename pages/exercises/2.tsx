@@ -1,28 +1,47 @@
 import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { Loader } from '~/components/Loader';
 import { client } from '~/lib/client/client';
-import { TlTweets, TweetsScheme } from '~/lib/scheme/tweets';
+import type { TlTweets } from '~/lib/scheme/tweets';
+import { TweetsScheme } from '~/lib/scheme/tweets';
 import { AddTweetForm } from '../../src/components/tweets/AddTweetForm';
 import { Like } from '../../src/components/tweets/Like';
 import { Replies } from '../../src/components/tweets/Replies';
 import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
 
+const notifyFailed = () => toast.error("Couldn't fetch tweet...");
+
 const getTweets = async (signal?: AbortSignal) =>
   client(`/api/tweets`, { signal, zodSchema: TweetsScheme });
 
 export default function FetchAllTweets() {
   // 💣 Tu peux supprimer ce state
-  const [tweets, setTweets] = useState<TlTweets>([]);
+  const [tweets, setTweets] = useState<TlTweets | null>(null);
 
   // 🦁 Remplace tout ceci en utilisant `useQuery` de `react-query`
   useEffect(() => {
     const abortController = new AbortController();
-    getTweets(abortController.signal).then((data) => setTweets(data.tweets));
+
+    getTweets(abortController.signal)
+      .then((data) => {
+        setTweets(data.tweets);
+      })
+      .catch((err) => {
+        if (err.name === 'AbortError') return;
+
+        notifyFailed();
+        setTweets([]);
+      });
 
     return () => abortController.abort();
   }, []);
 
-  // 🦁 Afficher un `loader` en fonction de `isLoading` de `useQuery`
+  // 🦁 Remplace la vérification de `tweets` par un `isLoading` de `useQuery`
+  if (!tweets) return <Loader />;
+
+  // 🦁 Affiche une erreur si `isError` est `true`
+
   return (
     <TwitterLayout>
       <AddTweetForm />

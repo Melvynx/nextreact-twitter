@@ -1,9 +1,11 @@
-import { Inter } from '@next/font/google';
 import Head from 'next/head';
-import Exercise, { NavigationLink } from '~/components/chore/Navigation';
+import Exercise, {
+  NavigationLink,
+  SolutionLink,
+} from '~/components/chore/Navigation';
 import { prisma } from '~/db/prisma';
 
-const inter = Inter({ subsets: ['latin'] });
+// const inter = Inter({ subsets: ['latin'] });
 
 export default function Home({ tweetId }: { tweetId: string }) {
   return (
@@ -18,7 +20,10 @@ export default function Home({ tweetId }: { tweetId: string }) {
         <h1>Welcome to the twitter app !</h1>
         <div className="flex flex-col gap-8 mt-4">
           <Exercise number={1} solutionCount={3} />
-          <Exercise number={2} solutionCount={2} />
+          <Exercise number={2} solutionCount={4}>
+            <SolutionLink number={2} solution="3-bonus" />
+          </Exercise>
+
           <Exercise number={3} solutionCount={2} />
           <NavigationLink blue href={`/exercises/tweets/${tweetId}`}>
             Exercice 4

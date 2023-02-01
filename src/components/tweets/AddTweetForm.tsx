@@ -6,13 +6,12 @@ import { useUser } from '../../hooks/UserProvider';
 import GrowingTextArea from '../GrowingTextArea';
 import { TweetBase } from './Tweet';
 
-export const AddTweetForm = ({
-  onSubmit,
-  disabled,
-}: {
+type AddTweetFormProps = {
   onSubmit?: (content: string) => void;
   disabled?: boolean;
-}) => {
+};
+
+export const AddTweetForm = ({ onSubmit, disabled }: AddTweetFormProps) => {
   const { user } = useUser();
   // For the Growing Text Area we need state to allow auto growing
   const [value, setValue] = useState('');
@@ -30,7 +29,7 @@ export const AddTweetForm = ({
   };
 
   return (
-    <TweetBase user={user}>
+    <TweetBase className="border-b-2 border-neutral-700" user={user}>
       <form onSubmit={handleSubmit} className="flex flex-col items-end w-full">
         <GrowingTextArea
           value={value}

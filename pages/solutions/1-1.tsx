@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { z } from 'zod';
 import { Loader } from '~/components/Loader';
-import { TlTweets } from '~/lib/scheme/tweets';
+import type { TlTweets } from '~/lib/scheme/tweets';
 import { AddTweetForm } from '../../src/components/tweets/AddTweetForm';
 import { Like } from '../../src/components/tweets/Like';
 import { Replies } from '../../src/components/tweets/Replies';
@@ -50,6 +50,7 @@ export default function FetchAllTweets() {
         if (err.name === 'AbortError') return;
 
         notifyFailed();
+        setTweets([]);
       });
 
     return () => {
@@ -62,7 +63,7 @@ export default function FetchAllTweets() {
   return (
     <TwitterLayout>
       <AddTweetForm />
-      {tweets?.map((tweet) => (
+      {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweet={tweet}>
           <Replies count={tweet._count.replies} />
           <Like count={tweet._count.likes} />
