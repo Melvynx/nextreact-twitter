@@ -28,7 +28,7 @@ const GrowingTextArea = ({
       value={value}
       onChange={onChange}
       placeholder={placeholder}
-      className={clsx('w-full bg-transparent resize-none focus:outline-none', {
+      className={clsx('w-full resize-none bg-transparent focus:outline-none', {
         'text-gray-500': disabled,
       })}
     />

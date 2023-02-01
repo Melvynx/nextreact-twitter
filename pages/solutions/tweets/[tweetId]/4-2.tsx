@@ -1,12 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetWithLikes } from '~/components/tweets/TweetWithLikes';
 import TwitterLayout from '~/components/TwitterLayout';
 import { getTweet } from '~/db/tweets';
 import { client } from '~/lib/client/client';
 import { getOptionalUserIdInCookie } from '~/lib/client/getUserIdCookie';
-import { TweetScheme, TweetView } from '~/lib/scheme/tweets';
+import type { TweetView } from '~/lib/scheme/tweets';
+import { TweetScheme } from '~/lib/scheme/tweets';
 
 const getApiTweet = async (tweetId: string) => {
   return client(`/api/tweets/${tweetId}`, {
@@ -14,14 +15,18 @@ const getApiTweet = async (tweetId: string) => {
   });
 };
 
-export default function TweetPage({ tweet: defaultTweet }: { tweet: TweetView }) {
+export default function TweetPage({
+  tweet: defaultTweet,
+}: {
+  tweet: TweetView;
+}) {
   const { data } = useQuery({
     queryKey: ['tweet', defaultTweet.id],
     queryFn: () => getApiTweet(defaultTweet.id),
     initialData: { tweet: defaultTweet },
   });
 
-  const tweet = data.tweet ?? defaultTweet;
+  const tweet = data.tweet;
 
   return (
     <TwitterLayout>

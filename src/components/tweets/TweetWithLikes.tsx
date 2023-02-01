@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { client } from '~/lib/client/client';
-import { TlTweet, TlTweets, TweetView } from '~/lib/scheme/tweets';
+import type { TlTweet, TlTweets, TweetView } from '~/lib/scheme/tweets';
 import { Like } from './Like';
 import { Replies } from './Replies';
 import { Tweet } from './Tweet';
@@ -40,7 +40,12 @@ type LikeUpdateProps = {
   parentTweetId?: string;
 };
 
-const LikeUpdate = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
+const LikeUpdate = ({
+  count,
+  liked,
+  tweetId,
+  parentTweetId,
+}: LikeUpdateProps) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -49,9 +54,9 @@ const LikeUpdate = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) =
     },
     onMutate: () => {
       if (parentTweetId) {
-        queryClient.cancelQueries(['tweet', parentTweetId]);
+        void queryClient.cancelQueries(['tweet', parentTweetId]);
       } else {
-        queryClient.cancelQueries(['tweets']);
+        void queryClient.cancelQueries(['tweets']);
       }
 
       const previousValue = queryClient.getQueryData(['tweets']);
@@ -59,7 +64,8 @@ const LikeUpdate = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) =
       if (parentTweetId) {
         queryClient.setQueryData(
           ['tweet', parentTweetId],
-          (old?: { tweet: TweetView }) => fakeUpdateParentTweet(tweetId, liked, old)
+          (old?: { tweet: TweetView }) =>
+            fakeUpdateParentTweet(tweetId, liked, old)
         );
       } else {
         queryClient.setQueryData(['tweets'], (old?: { tweets: TlTweets }) =>
@@ -71,17 +77,20 @@ const LikeUpdate = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) =
     },
     onError: (err, variables, context) => {
       if (parentTweetId) {
-        queryClient.setQueryData(['tweet', parentTweetId], context?.previousValue);
+        queryClient.setQueryData(
+          ['tweet', parentTweetId],
+          context?.previousValue
+        );
       } else {
         queryClient.setQueryData(['tweets'], context?.previousValue);
       }
       notifyFailed();
     },
-    onSuccess: (updatedTweet) => {
+    onSuccess: () => {
       if (parentTweetId) {
-        queryClient.invalidateQueries(['tweet', parentTweetId]);
+        void queryClient.invalidateQueries(['tweet', parentTweetId]);
       } else {
-        queryClient.invalidateQueries(['tweets']);
+        void queryClient.invalidateQueries(['tweets']);
       }
     },
   });
@@ -108,18 +117,18 @@ const fakeUpdateParentTweet = (
   if (!old) {
     return old;
   }
+
+  const newLikes = liked
+    ? old.tweet._count.likes - 1
+    : old.tweet._count.likes + 1;
+
   return {
     tweet: {
       ...old.tweet,
       liked: tweetId === old.tweet.id ? !liked : old.tweet.liked,
       _count: {
         ...old.tweet._count,
-        likes:
-          tweetId === old.tweet.id
-            ? liked
-              ? old.tweet._count.likes - 1
-              : old.tweet._count.likes + 1
-            : old.tweet._count.likes,
+        likes: tweetId === old.tweet.id ? newLikes : old.tweet._count.likes,
       },
       replies: old.tweet.replies.map((reply) => {
         if (reply.id !== tweetId) {

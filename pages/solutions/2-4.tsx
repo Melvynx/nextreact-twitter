@@ -3,6 +3,7 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { Error } from '~/components/Error';
 import { Loader } from '~/components/Loader';
 import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
@@ -35,6 +36,7 @@ export default function FetchAllTweets() {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
+    refetch,
   } = useInfiniteTweet();
 
   if (isLoading) {
@@ -42,7 +44,7 @@ export default function FetchAllTweets() {
   }
 
   if (isError) {
-    return <p>An error occurred.</p>;
+    return <Error error="Couldn't fetch tweet..." reset={() => refetch()} />;
   }
 
   const tweets = data.pages.flatMap((page) => page.tweets);

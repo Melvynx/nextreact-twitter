@@ -18,7 +18,10 @@ const getTweets = async (signal?: AbortSignal, page = 0) =>
   client(`/api/tweets?page=${page}`, { signal, zodSchema: TweetsScheme });
 
 // Je créer un hooks qui va me permettre d'ajouter un "Observer" à un élément du DOM qui va appelé une fonction lorsque l'élément est visible
-const useOnVisible = (ref: React.RefObject<HTMLElement>, callback: () => void) => {
+const useOnVisible = (
+  ref: React.RefObject<HTMLElement>,
+  callback: () => void
+) => {
   useEffect(() => {
     if (!ref.current) return;
 
@@ -65,7 +68,9 @@ export const NextButton = ({
   useOnVisible(ref, fetchNextPage);
 
   // J'ai déplacer le code de l'exercice précédent ici !
-  const nextPageStatus = hasNextPage ? 'Loading...' : 'There is not more tweets';
+  const nextPageStatus = hasNextPage
+    ? 'Loading...'
+    : 'There is not more tweets';
 
   return (
     <button ref={ref} className="block py-4">

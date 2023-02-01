@@ -26,7 +26,7 @@ export default apiHandler({
         return;
       }
 
-      res.setHeader('Set-Cookie', `userId=${user?.id}; Path=/; HttpOnly`);
+      res.setHeader('Set-Cookie', `userId=${user.id}; Path=/; HttpOnly`);
       res.status(200).json({ user });
     },
     DELETE: async (req: NextApiRequest, res: NextApiResponse) => {

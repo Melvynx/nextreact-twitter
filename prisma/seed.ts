@@ -48,7 +48,7 @@ const main = async () => {
     );
   }
 
-  const tweets = await Promise.all(tweetsPromises);
+  await Promise.all(tweetsPromises);
 };
 
 main()

@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetWithLikes } from '~/components/tweets/TweetWithLikes';
 import { client } from '~/lib/client/client';
-import { TlTweets, TweetsScheme } from '~/lib/scheme/tweets';
+import type { TlTweets } from '~/lib/scheme/tweets';
+import { TweetsScheme } from '~/lib/scheme/tweets';
 
 type TweetsTlProps = {
   tweets: TlTweets;
@@ -17,7 +18,7 @@ const getApiTweet = async () => {
   });
 };
 
-export default function TweetsTl({ tweets: defaultTweets, userId }: TweetsTlProps) {
+export default function TweetsTl({ tweets: defaultTweets }: TweetsTlProps) {
   const { data } = useQuery({
     queryKey: ['tweets'],
     queryFn: () => getApiTweet(),

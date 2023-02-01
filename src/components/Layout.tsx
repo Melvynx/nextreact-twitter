@@ -1,11 +1,11 @@
 import Link from 'next/link';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useUser } from '../hooks/UserProvider';
 
 export const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <div className="flex flex-col max-w-lg min-h-full m-auto">
-      <header className="flex items-center justify-between gap-2 p-2 border-b border-b-gray-700">
+    <div className="m-auto flex min-h-full max-w-lg flex-col">
+      <header className="flex items-center justify-between gap-2 border-b border-b-gray-700 p-2">
         <Link href="/" className="text-2xl font-bold text-blue-300">
           Twitter
         </Link>

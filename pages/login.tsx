@@ -19,12 +19,15 @@ export default function Login({ emails }: { emails: { email: string }[] }) {
 
   return (
     <div>
-      <form onClick={handleSubmit} className="flex flex-col gap-2 items-center my-4">
+      <form
+        onClick={handleSubmit}
+        className="my-4 flex flex-col items-center gap-2"
+      >
         <h2>Login with your email</h2>
         <input
           name="email"
           type="text"
-          className="p-2 w-full bg-transparent border border-blue-300"
+          className="w-full border border-blue-300 bg-transparent p-2"
           placeholder="email"
         />
         <input type="submit" value="Login" />

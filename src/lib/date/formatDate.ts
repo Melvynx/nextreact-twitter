@@ -1,5 +1,5 @@
-export const formatDate = (date: string | Date) => {
-  let dateObj = date instanceof Date ? date : new Date(date);
+export const formatDate = (date: Date | string) => {
+  const dateObj = date instanceof Date ? date : new Date(date);
 
   const diff = new Date().getTime() - dateObj.getTime();
   const diffInMinutes = Math.floor(diff / 1000 / 60);

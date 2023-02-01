@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import type { User } from '@prisma/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useIsClient, useLocalStorage } from 'usehooks-ts';
 import { z } from 'zod';
@@ -48,7 +48,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     return client(`/api/auth`, {
       method: 'DELETE',
-    }).then((data) => {
+    }).then(() => {
       setIsAuthenticated(false);
       setUser(null);
     });
@@ -61,15 +61,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const abortController = new AbortController();
     const signal = abortController.signal;
 
-    fetch(`/api/user`, {
-      method: 'GET',
+    client('/api/user', {
       signal,
+      zodSchema: UserScheme,
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setUser(data.user);
+      .then((json) => setUser(json.user))
+      .catch((err) => {
+        console.log(err);
       });
   }, [isAuthenticated, isClient]);
 

@@ -4,7 +4,7 @@ import { getAllRules, getRule } from '~/lib/fs/rules';
 
 export default function RulePage({ rule }: { rule: string }) {
   return (
-    <div className="mt-4 prose prose-invert">
+    <div className="prose prose-invert mt-4">
       <Link href="/solutions/rules">Back</Link>
       <Markdown>{rule}</Markdown>
     </div>

@@ -1,6 +1,6 @@
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 import TwitterLayout from '~/components/TwitterLayout';
-import { TweetView } from '~/lib/scheme/tweets';
+import type { TweetView } from '~/lib/scheme/tweets';
 
 export default function TweetId({ tweet }: { tweet: TweetView }) {
   return (

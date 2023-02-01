@@ -1,7 +1,7 @@
-import { IncomingMessage } from 'http';
-import { NextApiRequest } from 'next';
+import type { IncomingMessage } from 'http';
+import type { NextApiRequest } from 'next';
 
-export const getUserIdInCookie = (req: NextApiRequest | IncomingMessage) => {
+export const getUserIdInCookie = (req: IncomingMessage | NextApiRequest) => {
   const userId = getOptionalUserIdInCookie(req);
 
   if (!userId) throw new Error('userId is not found in cookie.');
@@ -9,7 +9,9 @@ export const getUserIdInCookie = (req: NextApiRequest | IncomingMessage) => {
   return userId;
 };
 
-export const getOptionalUserIdInCookie = (req: NextApiRequest | IncomingMessage) => {
+export const getOptionalUserIdInCookie = (
+  req: IncomingMessage | NextApiRequest
+) => {
   const cookie = req.headers.cookie;
   const userId = cookie?.split('userId=')[1]?.split(';')[0];
 

@@ -18,7 +18,7 @@ export default function Home({ tweetId }: { tweetId: string }) {
       </Head>
       <div className="flex flex-col gap-4 p-2">
         <h1>Welcome to the twitter app !</h1>
-        <div className="flex flex-col gap-8 mt-4">
+        <div className="mt-4 flex flex-col gap-8">
           <Exercise number={1} solutionCount={3} />
           <Exercise number={2} solutionCount={4}>
             <SolutionLink number={2} solution="3-bonus" />
@@ -33,7 +33,9 @@ export default function Home({ tweetId }: { tweetId: string }) {
               Exercice 5
             </NavigationLink>
 
-            <NavigationLink href={`/solutions/rules`}>Solution 5</NavigationLink>
+            <NavigationLink href={`/solutions/rules`}>
+              Solution 5
+            </NavigationLink>
           </div>
           <div className="flex flex-col gap-2">
             <NavigationLink blue href={`/6/exercices`}>

@@ -1,33 +1,37 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { Error } from '~/components/Error';
 import { Loader } from '~/components/Loader';
 import { AddTweet } from '~/components/tweets/AddTweet';
+import { TweetsNextButton } from '~/components/tweets/TweetsNextButton';
 import { client } from '~/lib/client/client';
+import { useInfiniteTweets } from '~/lib/tweets/query.tweet';
 import { Like } from '../../src/components/tweets/Like';
 import { Replies } from '../../src/components/tweets/Replies';
 import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
-import { TweetsScheme } from '../../src/lib/scheme/tweets';
 
-const getTweets = async (signal?: AbortSignal) =>
-  client(`/api/tweets`, { signal, zodSchema: TweetsScheme });
-
-export default function FetchAllTweets() {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['tweets'],
-    queryFn: ({ signal }) => getTweets(signal),
-  });
+export default function OptimisticUpdate() {
+  const {
+    data,
+    isLoading,
+    isError,
+    isFetchingNextPage,
+    hasNextPage,
+    refetch,
+    fetchNextPage,
+  } = useInfiniteTweets();
 
   if (isLoading) {
     return <Loader />;
   }
 
   if (isError) {
-    return <p>An error occurred.</p>;
+    return <Error error="Couldn't fetch tweet..." reset={() => refetch()} />;
   }
 
-  const tweets = data.tweets;
+  const tweets = data.pages.flatMap((page) => page.tweets);
 
   return (
     <TwitterLayout>
@@ -42,13 +46,18 @@ export default function FetchAllTweets() {
           />
         </Tweet>
       ))}
+      <TweetsNextButton
+        isFetchingNextPage={isFetchingNextPage}
+        hasNextPage={hasNextPage}
+        fetchNextPage={fetchNextPage}
+      />
     </TwitterLayout>
   );
 }
 
 const notifyFailed = () => toast.error("Couldn't like tweet");
 
-const tweetLike = async (tweetId: string, liked: boolean) =>
+const likeTweet = async (tweetId: string, liked: boolean) =>
   client(`/api/tweets/${tweetId}/like`, {
     method: liked ? 'DELETE' : 'POST',
   });
@@ -66,7 +75,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
 
   const onClick = () => {
     setIsLoading(true);
-    tweetLike(tweetId, liked)
+    likeTweet(tweetId, liked)
       .then(() => {
         void queryClient.invalidateQueries(['tweets']);
       })

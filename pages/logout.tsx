@@ -8,12 +8,14 @@ export default function Logout() {
 
   useEffect(() => {
     if (!user) {
-      router.push('/');
+      void router.push('/');
       return;
     }
-    logout().then(() => {
-      router.push('/login');
-    });
+    logout()
+      .then(() => {
+        void router.push('/login');
+      })
+      .catch(() => void 0);
   }, [router, user, logout]);
 
   return <div>Logout processing...</div>;

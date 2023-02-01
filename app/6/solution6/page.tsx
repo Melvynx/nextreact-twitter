@@ -18,7 +18,7 @@ export default async function Solution6() {
 
   return (
     <TweetsTl tweets={tweets}>
-      <div className="p-4 bg-orange-900 border border-orange-400">
+      <div className="border border-orange-400 bg-orange-900 p-4">
         <p>There is a total of {totalTweets} tweets.</p>
         <p className="text-xs">Im a server component</p>
       </div>

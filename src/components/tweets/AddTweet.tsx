@@ -15,12 +15,12 @@ export const AddTweet = ({ tweetId }: AddTweetProps) => {
     {
       onSuccess: () => {
         if (tweetId) {
-          queryClient.invalidateQueries({
+          void queryClient.invalidateQueries({
             queryKey: ['tweet', tweetId],
           });
           return;
         }
-        queryClient.invalidateQueries({
+        void queryClient.invalidateQueries({
           queryKey: ['tweets'],
         });
       },

@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers';
-import { AddTweetForm } from '~/components/tweets/AddTweetForm';
 import { Like } from '~/components/tweets/Like';
 import { Replies } from '~/components/tweets/Replies';
 import { Tweet } from '~/components/tweets/Tweet';

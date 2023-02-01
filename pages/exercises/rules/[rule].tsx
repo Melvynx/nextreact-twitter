@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function RulePage({ rule }: { rule: string }) {
   return (
-    <div className="mt-4 prose prose-invert">
+    <div className="prose prose-invert mt-4">
       <Link href="/solutions/rules">Back</Link>
       {/* 🦁 Affiche le markdown à l'aide de notre library */}
     </div>

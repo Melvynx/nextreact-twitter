@@ -30,7 +30,7 @@ export const AddTweetForm = ({ onSubmit, disabled }: AddTweetFormProps) => {
 
   return (
     <TweetBase className="border-b-2 border-neutral-700" user={user}>
-      <form onSubmit={handleSubmit} className="flex flex-col items-end w-full">
+      <form onSubmit={handleSubmit} className="flex w-full flex-col items-end">
         <GrowingTextArea
           value={value}
           onChange={(event) => setValue(event.target.value)}
@@ -38,9 +38,12 @@ export const AddTweetForm = ({ onSubmit, disabled }: AddTweetFormProps) => {
         ></GrowingTextArea>
         <button
           type="submit"
-          className={clsx('px-4 py-2 mt-4 text-white bg-blue-500 rounded-full', {
-            'opacity-50 cursor-not-allowed': disabled,
-          })}
+          className={clsx(
+            'mt-4 rounded-full bg-blue-500 px-4 py-2 text-white',
+            {
+              'cursor-not-allowed opacity-50': disabled,
+            }
+          )}
         >
           Tweet
         </button>

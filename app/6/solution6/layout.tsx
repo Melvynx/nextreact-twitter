@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import TwitterLayout from '~/components/TwitterLayout';
 
 export default function layout({ children }: PropsWithChildren) {

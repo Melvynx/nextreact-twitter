@@ -15,12 +15,12 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex flex-col gap-4 p-4 bg-orange-500 border border-orange-400 bg-opacity-10">
+    <div className="flex flex-col gap-4 border border-orange-400 bg-orange-500 bg-opacity-10 p-4">
       <p>Something went wrong!</p>
 
-      <code className="p-2 bg-orange-900">{error.message}</code>
+      <code className="bg-orange-900 p-2">{error.message}</code>
 
-      <button className="p-2 bg-red-800" onClick={() => reset()}>
+      <button className="bg-red-800 p-2" onClick={() => reset()}>
         Reset error boundary
       </button>
     </div>

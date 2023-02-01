@@ -10,10 +10,6 @@ const ParamsScheme = z.object({
   tweetId: z.string(),
 });
 
-const BodyScheme = z.object({
-  userId: z.string(),
-});
-
 export default apiHandler({
   endpoints: {
     POST: async (req, res) => {

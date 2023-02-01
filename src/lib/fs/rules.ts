@@ -9,6 +9,9 @@ export const getAllRules = async () => {
 };
 
 export const getRule = async (ruleName: string) => {
-  const rule = await fs.readFile(path.join(rulesPath, ruleName + '.md'), 'utf-8');
+  const rule = await fs.readFile(
+    path.join(rulesPath, `${ruleName  }.md`),
+    'utf-8'
+  );
   return rule;
 };

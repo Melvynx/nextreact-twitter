@@ -1,7 +1,8 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Component, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
+import { Component } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Layout } from '~/components/Layout';
 import { UserProvider } from '~/hooks/UserProvider';

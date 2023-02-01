@@ -1,10 +1,10 @@
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetWithLikes } from '~/components/tweets/TweetWithLikes';
 import TwitterLayout from '~/components/TwitterLayout';
 import { getTweet } from '~/db/tweets';
 import { getOptionalUserIdInCookie } from '~/lib/client/getUserIdCookie';
-import { TweetView } from '~/lib/scheme/tweets';
+import type { TweetView } from '~/lib/scheme/tweets';
 
 export default function TweetId({ tweet }: { tweet: TweetView }) {
   return (
