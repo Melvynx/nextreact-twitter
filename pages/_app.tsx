@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Toaster } from 'react-hot-toast';
@@ -15,6 +16,9 @@ const queryClient = new QueryClient({
   },
 });
 
+const isDev = process.env.NODE_ENV === 'development';
+const isReactQueryDevToolEnabled: boolean = isDev && false;
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
@@ -22,6 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <title>Twitter</title>
       </Head>
       <QueryClientProvider client={queryClient}>
+        {isReactQueryDevToolEnabled && (
+          <ReactQueryDevtools initialIsOpen={false} />
+        )}
         <UserProvider>
           <Layout>
             <Component {...pageProps} />

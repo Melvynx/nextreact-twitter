@@ -94,6 +94,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
             return old;
           }
           return {
+            ...old,
             pages: old.pages.map((page) => ({
               ...page,
               tweets: page.tweets.map((tweet) => {

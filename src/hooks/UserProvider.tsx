@@ -1,6 +1,7 @@
 import type { User } from '@prisma/client';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useIsClient, useLocalStorage } from 'usehooks-ts';
+import { useQuery } from '@tanstack/react-query';
+import { createContext, useContext } from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 import { z } from 'zod';
 import { client } from '~/lib/client/client';
 
@@ -25,12 +26,18 @@ const UserScheme = z.object({
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useLocalStorage(
     'isAuthenticated',
     false
   );
-  const isClient = useIsClient();
+
+  const { data, remove } = useQuery({
+    queryKey: ['user'],
+    queryFn: () => client('/api/user', { zodSchema: UserScheme }),
+    enabled: isAuthenticated,
+  });
+
+  const user = data?.user ?? null;
 
   const login = async (email: string) => {
     return client(`/api/auth`, {
@@ -39,8 +46,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         email,
       },
       zodSchema: UserScheme,
-    }).then((data) => {
-      setUser(data.user);
+    }).then(() => {
       setIsAuthenticated(true);
     });
   };
@@ -50,26 +56,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       method: 'DELETE',
     }).then(() => {
       setIsAuthenticated(false);
-      setUser(null);
+      remove();
     });
   };
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    if (!isClient) return;
-
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    client('/api/user', {
-      signal,
-      zodSchema: UserScheme,
-    })
-      .then((json) => setUser(json.user))
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [isAuthenticated, isClient]);
 
   return (
     <UserContext.Provider value={{ user, login, logout }}>
