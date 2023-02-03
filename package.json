@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:setup": "prisma db push; pnpm prisma:seed; pnpm prisma:generate",
+    "prisma:setup": "prisma db push && pnpm prisma:seed && pnpm prisma:generate",
     "prisma:seed": "prisma db seed",
     "prisma:generate": "prisma generate"
   },
