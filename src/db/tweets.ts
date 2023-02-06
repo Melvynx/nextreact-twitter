@@ -51,8 +51,8 @@ export const getTweets = async (userId?: string, page = 0) => {
   return fixedTweet;
 };
 
-export const getTweet = (id: string, userId?: string) => {
-  return prisma.tweet.findUnique({
+export const getTweet = async (id: string, userId?: string) => {
+  const tweet = await prisma.tweet.findUnique({
     where: {
       id,
     },
@@ -61,6 +61,23 @@ export const getTweet = (id: string, userId?: string) => {
       replies: { select: selectTweetQuery(userId) },
     },
   });
+
+  if (!tweet) {
+    return tweet;
+  }
+
+  const fixedTweet = {
+    ...tweet,
+    liked: tweet.likes.some((l) => l.userId === userId),
+    createdAt: tweet.createdAt.toISOString(),
+    replies: tweet.replies.map((r) => ({
+      ...r,
+      liked: r.likes.some((l) => l.userId === userId),
+      createdAt: r.createdAt.toISOString(),
+    })),
+  };
+
+  return fixedTweet;
 };
 
 // Type that modifies `likes` property to boolean

@@ -22,7 +22,7 @@ export const TweetWithLikes = ({
   return (
     <Tweet key={tweet.id} tweet={tweet}>
       <RepliesButton count={tweet._count.replies} />
-      <LikeUpdate
+      <Like
         tweetId={tweet.id}
         liked={tweet.liked}
         count={tweet._count.likes}
@@ -46,36 +46,29 @@ type LikeUpdateProps = {
   parentTweetId?: string;
 };
 
-const LikeUpdate = ({
-  count,
-  liked,
-  tweetId,
-  parentTweetId,
-}: LikeUpdateProps) => {
+const Like = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
   const queryClient = useQueryClient();
+
+  const queryKey = parentTweetId
+    ? tweetKeys.getById(parentTweetId)
+    : tweetKeys.all;
 
   const mutation = useMutation({
     mutationFn: () => {
       return tweetLike(tweetId, liked);
     },
     onMutate: () => {
-      if (parentTweetId) {
-        void queryClient.cancelQueries(tweetKeys.getById(parentTweetId));
-      } else {
-        void queryClient.cancelQueries(tweetKeys.all);
-      }
+      void queryClient.cancelQueries(queryKey);
 
-      const previousValue = queryClient.getQueryData(['tweets']);
+      const previousValue = queryClient.getQueryData(queryKey);
 
       if (parentTweetId) {
-        queryClient.setQueryData(
-          tweetKeys.getById(parentTweetId),
-          (old?: { tweet: TweetView }) =>
-            fakeUpdateParentTweet(tweetId, liked, old)
+        queryClient.setQueryData(queryKey, (old?: { tweet: TweetView }) =>
+          fakeUpdateParentTweet(tweetId, liked, old)
         );
       } else {
         queryClient.setQueryData(
-          tweetKeys.all,
+          queryKey,
           (old?: { pages: TlTweetsPage[] }) => {
             if (!old) {
               return old;
@@ -93,27 +86,18 @@ const LikeUpdate = ({
       return { previousValue };
     },
     onError: (err, variables, context) => {
-      if (parentTweetId) {
-        queryClient.setQueryData(
-          tweetKeys.getById(parentTweetId),
-          context?.previousValue
-        );
-      } else {
-        void queryClient.invalidateQueries({
-          queryKey: tweetKeys.all,
-          refetchPage: (lastPage: TlTweetsPage) => {
-            return lastPage.tweets.some((tweet) => tweet.id === tweetId);
-          },
-        });
-      }
+      void queryClient.setQueriesData(queryKey, context?.previousValue);
       notifyFailed();
     },
     onSuccess: () => {
-      if (parentTweetId) {
-        void queryClient.invalidateQueries(tweetKeys.getById(parentTweetId));
-      } else {
-        void queryClient.invalidateQueries(tweetKeys.all);
-      }
+      void queryClient.invalidateQueries({
+        queryKey,
+        refetchPage: parentTweetId
+          ? undefined
+          : (lastPage: TlTweetsPage) => {
+              return lastPage.tweets.some((tweet) => tweet.id === tweetId);
+            },
+      });
     },
   });
 

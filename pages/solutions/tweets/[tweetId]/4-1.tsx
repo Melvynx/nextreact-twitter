@@ -30,7 +30,7 @@ export const getServerSideProps = async (context: {
 
   return {
     props: {
-      tweet: JSON.parse(JSON.stringify(tweet)),
+      tweet,
     },
   };
 };
