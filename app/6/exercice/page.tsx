@@ -1,6 +1,6 @@
 import { AddTweetForm } from '~/components/tweets/AddTweetForm';
-import { Like } from '~/components/tweets/Like';
-import { Replies } from '~/components/tweets/Replies';
+import { LikeButton } from '~/components/tweets/LikeButton';
+import { RepliesButton } from '~/components/tweets/RepliesButton';
 import { Tweet } from '~/components/tweets/Tweet';
 import TwitterLayout from '~/components/TwitterLayout';
 
@@ -18,8 +18,8 @@ export default function Exercice6() {
       <AddTweetForm />
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweet={tweet}>
-          <Replies count={tweet._count.replies} />
-          <Like count={tweet._count.likes} liked={tweet.liked} />
+          <RepliesButton count={tweet._count.replies} />
+          <LikeButton count={tweet._count.likes} liked={tweet.liked} />
         </Tweet>
       ))}
     </TwitterLayout>

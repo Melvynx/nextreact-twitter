@@ -1,6 +1,10 @@
 import { FaRegComment } from 'react-icons/fa';
 
-export const Replies = ({ count }: { count: number }) => {
+type RepliesButtonProps = {
+  count: number;
+};
+
+export const RepliesButton = ({ count }: RepliesButtonProps) => {
   return (
     <div className="flex flex-row items-center gap-2">
       <button className="flex flex-row items-center gap-2">

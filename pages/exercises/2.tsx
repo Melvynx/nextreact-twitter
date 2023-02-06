@@ -5,8 +5,8 @@ import { client } from '~/lib/client/client';
 import type { TlTweets } from '~/lib/scheme/tweets';
 import { TweetsScheme } from '~/lib/scheme/tweets';
 import { AddTweetForm } from '../../src/components/tweets/AddTweetForm';
-import { Like } from '../../src/components/tweets/Like';
-import { Replies } from '../../src/components/tweets/Replies';
+import { LikeButton } from '../../src/components/tweets/LikeButton';
+import { RepliesButton } from '../../src/components/tweets/RepliesButton';
 import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
 
@@ -47,8 +47,8 @@ export default function FetchAllTweets() {
       <AddTweetForm />
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweet={tweet}>
-          <Replies count={tweet._count.replies} />
-          <Like count={tweet._count.likes} liked={tweet.liked} />
+          <RepliesButton count={tweet._count.replies} />
+          <LikeButton count={tweet._count.likes} liked={tweet.liked} />
         </Tweet>
       ))}
     </TwitterLayout>

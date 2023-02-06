@@ -3,7 +3,7 @@
 import clsx from 'clsx';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 
-type LikeProps = {
+type LikeButtonProps = {
   count: number;
   liked?: boolean;
   onClick?: () => void;
@@ -11,13 +11,13 @@ type LikeProps = {
   loading?: boolean;
 };
 
-export const Like = ({
+export const LikeButton = ({
   count,
   onClick,
   liked,
   disabled,
   loading,
-}: LikeProps) => {
+}: LikeButtonProps) => {
   return (
     <div className="flex flex-row items-center gap-2">
       <button

@@ -8,6 +8,7 @@ import { client } from '~/lib/client/client';
 import { getOptionalUserIdInCookie } from '~/lib/client/getUserIdCookie';
 import type { TweetView } from '~/lib/scheme/tweets';
 import { TweetScheme } from '~/lib/scheme/tweets';
+import { tweetKeys } from '~/lib/tweets/query.tweet';
 
 const getApiTweet = async (tweetId: string) => {
   return client(`/api/tweets/${tweetId}`, {
@@ -21,7 +22,7 @@ export default function TweetPage({
   tweet: TweetView;
 }) {
   const { data } = useQuery({
-    queryKey: ['tweet', defaultTweet.id],
+    queryKey: tweetKeys.getById(defaultTweet.id),
     queryFn: () => getApiTweet(defaultTweet.id),
     initialData: { tweet: defaultTweet },
   });
@@ -33,7 +34,7 @@ export default function TweetPage({
       <TweetWithLikes parentTweetId={tweet.id} tweet={tweet} />
       <AddTweet tweetId={tweet.id} />
       <h2 className="p-4 text-xl font-bold">Replies</h2>
-      {tweet.replies.map((reply) => (
+      {tweet.replies?.map((reply) => (
         <TweetWithLikes parentTweetId={tweet.id} key={reply.id} tweet={reply} />
       ))}
     </TwitterLayout>

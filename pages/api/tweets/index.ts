@@ -6,7 +6,6 @@ import {
   getOptionalUserIdInCookie,
   getUserIdInCookie,
 } from '~/lib/client/getUserIdCookie';
-import { wait } from '~/lib/test-utiles/wait';
 import { getTweets } from '../../../src/db/tweets';
 
 const AddTweetBody = z.object({
@@ -25,7 +24,7 @@ const PageParams = z.object({
 export default apiHandler({
   endpoints: {
     GET: async (req, res) => {
-      await wait(2000);
+      // await wait(2000);
       const userId = getOptionalUserIdInCookie(req);
       const params = PageParams.parse(req.query);
       const page = params.page ?? 0;

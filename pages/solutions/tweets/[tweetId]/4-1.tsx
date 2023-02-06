@@ -12,7 +12,7 @@ export default function TweetId({ tweet }: { tweet: TweetView }) {
       <TweetWithLikes tweet={tweet} parentTweetId={tweet.id} />
       <AddTweet tweetId={tweet.id} />
       <h2 className="p-4 text-xl font-bold">Replies</h2>
-      {tweet.replies.map((reply) => (
+      {tweet.replies?.map((reply) => (
         <TweetWithLikes key={reply.id} tweet={reply} parentTweetId={tweet.id} />
       ))}
     </TwitterLayout>

@@ -25,7 +25,7 @@ export default function Home({ tweetId }: { tweetId: string }) {
           </Exercise>
 
           <Exercise number={3} solutionCount={2} />
-          <NavigationLink blue href={`/exercises/tweets/${tweetId}`}>
+          <NavigationLink blue href={`/routing/tweets/${tweetId}`}>
             Exercice 4
           </NavigationLink>
           <div className="flex flex-col gap-2">

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { Like } from '~/components/tweets/Like';
+import { LikeButton } from '~/components/tweets/LikeButton';
 import { client } from '~/lib/client/client';
 
 const notifyFailed = () => toast.error("Couldn't like tweet");
@@ -36,7 +36,7 @@ export const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
   };
 
   return (
-    <Like
+    <LikeButton
       count={count}
       onClick={() => {
         if (isLoading) {

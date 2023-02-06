@@ -8,8 +8,8 @@ import { TweetsNextButton } from '~/components/tweets/TweetsNextButton';
 import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
 import { tweetKeys, useInfiniteTweets } from '~/lib/tweets/query.tweet';
-import { Like } from '../../src/components/tweets/Like';
-import { Replies } from '../../src/components/tweets/Replies';
+import { LikeButton } from '../../src/components/tweets/LikeButton';
+import { RepliesButton } from '../../src/components/tweets/RepliesButton';
 import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
 
@@ -39,8 +39,8 @@ export default function OptimisticUpdate() {
       <AddTweet />
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweet={tweet}>
-          <Replies count={tweet._count.replies} />
-          <LikeUpdate
+          <RepliesButton count={tweet._count.replies} />
+          <Like
             tweetId={tweet.id}
             liked={tweet.liked}
             count={tweet._count.likes}
@@ -69,7 +69,7 @@ type LikeUpdateProps = {
   liked: boolean;
 };
 
-const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
+const Like = ({ count, liked, tweetId }: LikeUpdateProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
 
@@ -90,7 +90,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
   };
 
   return (
-    <Like
+    <LikeButton
       disabled={isLoading || !user}
       count={count}
       onClick={() => {

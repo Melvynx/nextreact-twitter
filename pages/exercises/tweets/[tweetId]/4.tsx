@@ -5,8 +5,8 @@ import type { TweetView } from '~/lib/scheme/tweets';
 export default function TweetId({ tweet }: { tweet: TweetView }) {
   return (
     <TwitterLayout>
-      {/* 🦁 Affiche le TweetWithLikes avec parentTweetId étant tweet.id */}
-      {/* 🦁 Affiche le composant pour ajouter un Tweet (AddTweetForm) */}
+      {/* 🦁 Affiche le TweetWithLikes */}
+      {/* 🦁 Affiche le composant pour ajouter un Tweet (AddTweet) */}
       {/* 🦁 Affiche les réponses du tweet (tweet.replies), ils sont du même type que Tweet dans le composant TweetWithLikes avec parentTweetId étant tweet.id */}
     </TwitterLayout>
   );

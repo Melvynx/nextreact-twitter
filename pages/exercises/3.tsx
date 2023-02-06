@@ -4,8 +4,8 @@ import { Loader } from '~/components/Loader';
 import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetsNextButton } from '~/components/tweets/TweetsNextButton';
 import { useInfiniteTweets } from '~/lib/tweets/query.tweet';
-import { Like } from '../../src/components/tweets/Like';
-import { Replies } from '../../src/components/tweets/Replies';
+import { LikeButton } from '../../src/components/tweets/LikeButton';
+import { RepliesButton } from '../../src/components/tweets/RepliesButton';
 import { Tweet } from '../../src/components/tweets/Tweet';
 import TwitterLayout from '../../src/components/TwitterLayout';
 
@@ -35,8 +35,8 @@ export default function OptimisticUpdate() {
       <AddTweet />
       {tweets.map((tweet) => (
         <Tweet key={tweet.id} tweet={tweet}>
-          <Replies count={tweet._count.replies} />
-          <LikeUpdate
+          <RepliesButton count={tweet._count.replies} />
+          <Like
             tweetId={tweet.id}
             liked={tweet.liked}
             count={tweet._count.likes}
@@ -68,7 +68,7 @@ type LikeUpdateProps = {
   liked: boolean;
 };
 
-const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
+const Like = ({ count, liked, tweetId }: LikeUpdateProps) => {
   // 🦁 Créer un state isLoading
   // 🦁 Utilise useQueryClient
 
@@ -80,7 +80,7 @@ const LikeUpdate = ({ count, liked, tweetId }: LikeUpdateProps) => {
   // * finalement (`.finally`) on va définir le state `isLoading` à false et le mettre à true pendant
 
   return (
-    <Like
+    <LikeButton
       count={count}
       onClick={() => {
         // 🦁 Appel la fonction onClick

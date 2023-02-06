@@ -8,8 +8,8 @@ import type {
   TweetView,
 } from '~/lib/scheme/tweets';
 import { tweetKeys } from '~/lib/tweets/query.tweet';
-import { Like } from './Like';
-import { Replies } from './Replies';
+import { LikeButton } from './LikeButton';
+import { RepliesButton } from './RepliesButton';
 import { Tweet } from './Tweet';
 
 export const TweetWithLikes = ({
@@ -21,7 +21,7 @@ export const TweetWithLikes = ({
 }) => {
   return (
     <Tweet key={tweet.id} tweet={tweet}>
-      <Replies count={tweet._count.replies} />
+      <RepliesButton count={tweet._count.replies} />
       <LikeUpdate
         tweetId={tweet.id}
         liked={tweet.liked}
@@ -118,7 +118,7 @@ const LikeUpdate = ({
   });
 
   return (
-    <Like
+    <LikeButton
       count={count}
       onClick={() => {
         if (mutation.isLoading) {

@@ -6,6 +6,7 @@ import { AddTweet } from '~/components/tweets/AddTweet';
 import { TweetsNextButton } from '~/components/tweets/TweetsNextButton';
 import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
+import type { TlTweetsPage } from '~/lib/scheme/tweets';
 import { tweetKeys, useInfiniteTweets } from '~/lib/tweets/query.tweet';
 import { LikeButton } from '../../src/components/tweets/LikeButton';
 import { RepliesButton } from '../../src/components/tweets/RepliesButton';
@@ -57,10 +58,11 @@ export default function OptimisticUpdate() {
 
 const notifyFailed = () => toast.error("Couldn't like tweet");
 
-const likeTweet = async (tweetId: string, liked: boolean) =>
-  client(`/api/tweets/${tweetId}/like`, {
+const likeTweet = async (tweetId: string, liked: boolean) => {
+  return client(`/api/tweets/${tweetId}/like`, {
     method: liked ? 'DELETE' : 'POST',
   });
+};
 
 type LikeUpdateProps = {
   tweetId: string;
@@ -69,27 +71,73 @@ type LikeUpdateProps = {
 };
 
 const Like = ({ count, liked, tweetId }: LikeUpdateProps) => {
-  const { user } = useUser();
-
   const queryClient = useQueryClient();
 
-  const mutation = useMutation(() => likeTweet(tweetId, liked), {
-    onSuccess: () => {
-      void queryClient.invalidateQueries(tweetKeys.all);
+  const { user } = useUser();
+
+  const mutation = useMutation({
+    mutationFn: () => {
+      return likeTweet(tweetId, liked);
     },
-    onError: () => {
+
+    onMutate: async () => {
+      await queryClient.cancelQueries({
+        queryKey: tweetKeys.all,
+      });
+
+      const previousValue = queryClient.getQueriesData(tweetKeys.all);
+
+      queryClient.setQueryData(
+        tweetKeys.all,
+        (old?: { pages: TlTweetsPage[] }) => {
+          if (!old) {
+            return old;
+          }
+          return {
+            ...old,
+            pages: old.pages.map((page) => ({
+              ...page,
+              tweets: page.tweets.map((tweet) => {
+                if (tweet.id !== tweetId) {
+                  return tweet;
+                }
+
+                return {
+                  ...tweet,
+                  liked: !liked,
+                  _count: {
+                    ...tweet._count,
+                    likes: tweet._count.likes + (liked ? -1 : 1),
+                  },
+                };
+              }),
+            })),
+          };
+        }
+      );
+
+      return { previousValue };
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({
+        queryKey: tweetKeys.all,
+        refetchPage: (lastPage: TlTweetsPage) => {
+          return lastPage.tweets.some((tweet) => tweet.id === tweetId);
+        },
+      });
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueriesData(tweetKeys.all, context?.previousValue);
       notifyFailed();
     },
   });
 
   return (
     <LikeButton
-      disabled={mutation.isLoading || !user}
+      disabled={!user}
+      loading={mutation.isLoading}
       count={count}
       onClick={() => {
-        if (mutation.isLoading) {
-          return;
-        }
         mutation.mutate();
       }}
       liked={liked}

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '~/hooks/UserProvider';
 import { client } from '~/lib/client/client';
+import { tweetKeys } from '~/lib/tweets/query.tweet';
 import { AddTweetForm } from './AddTweetForm';
 
 type AddTweetProps = { tweetId?: string };
@@ -14,14 +15,8 @@ export const AddTweet = ({ tweetId }: AddTweetProps) => {
       client('/api/tweets', { method: 'POST', data: { content, tweetId } }),
     {
       onSuccess: () => {
-        if (tweetId) {
-          void queryClient.invalidateQueries({
-            queryKey: ['tweet', tweetId],
-          });
-          return;
-        }
         void queryClient.invalidateQueries({
-          queryKey: ['tweets'],
+          queryKey: tweetId ? tweetKeys.getById(tweetId) : tweetKeys.all,
         });
       },
     }
