@@ -1,34 +1,46 @@
 import Markdown from 'markdown-to-jsx';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
+import type { Rule } from '~/lib/fs/rules';
 import { getAllRules, getRule } from '~/lib/fs/rules';
 
-export default function RulePage({ rule }: { rule: string }) {
+type RuleProps = {
+  rule: Rule;
+};
+
+export default function RulePage({ rule }: RuleProps) {
   return (
-    <div className="prose prose-invert mt-4">
+    <div className="prose prose-invert mt-4 p-2">
       <Link href="/solutions/rules">Back</Link>
-      <Markdown>{rule}</Markdown>
+      <Markdown>{rule.body}</Markdown>
     </div>
   );
 }
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths<{ rule: string }> = async () => {
   const rules = await getAllRules();
 
   return {
     paths: rules.map((rule) => ({
       params: {
-        rule, // pour /rules/[rule]
+        rule: rule.title,
       },
     })),
     fallback: false,
   };
-}
+};
 
-export async function getStaticProps({
-  params: { rule },
-}: {
-  params: { rule: string };
-}) {
+export const getStaticProps: GetStaticProps<
+  RuleProps,
+  { rule: string }
+> = async ({ params }) => {
+  if (!params) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const rule = params.rule;
   const ruleContent = await getRule(rule);
 
   return {
@@ -36,4 +48,4 @@ export async function getStaticProps({
       rule: ruleContent,
     },
   };
-}
+};

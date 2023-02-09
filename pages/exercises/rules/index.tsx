@@ -1,30 +1,38 @@
+import type { GetStaticProps } from 'next';
 import Link from 'next/link';
-// 🦁 Décommente la ligne suivante
-// import { getAllRules } from '~/lib/fs/rules';
+import type { Rules } from '~/lib/fs/rules';
+// 🦁 Import getAllRules
 
-export default function Rules({ rules }: { rules: string[] }) {
-  // 💣 Supprime la ligne suivante
-  const rule = 'test';
+type RulesProps = {
+  rules: Rules;
+};
+
+export default function Rules({ rules }: RulesProps) {
+  // 💣 Supprime cette ligne
+  const ruleDemo = {
+    title: 'rule-demo',
+    description: 'This is a demo rule',
+  };
   return (
-    <div>
-      <h1>Rules</h1>
-      <ul className="list-disc">
-        {/* 🦁 Remplace ceci par nos règles */}
-        <li>
-          <Link
-            href={`/exercices/rules/${rule}`}
-            className="text-blue-300 hover:underline"
-          >
-            {rule}
-          </Link>
-        </li>
+    <div className="mt-4 flex flex-col gap-8 p-2">
+      <h1 className="text-4xl">Rules</h1>
+      <ul className="flex list-disc flex-col gap-2">
+        {/* 🦁 Utilise la props `rules` pour afficher les règles */}
+        <Link href={`/exercices/rules/${ruleDemo.title}`}>
+          <li className="flex flex-col gap-2 rounded border-2 border-gray-900 p-2 capitalize hover:bg-gray-900">
+            <span className="text-md text-blue-300">{ruleDemo.title}</span>
+            <span className="text-xs text-gray-400">
+              {ruleDemo.description}
+            </span>
+          </li>
+        </Link>
       </ul>
     </div>
   );
 }
 
-export const getStaticProps = async () => {
-  // 🦁 Récupère les rules via getAllRules
+export const getStaticProps: GetStaticProps<RulesProps> = async () => {
+  // 🦁 Récupère les règles
   return {
     props: {
       rules: [],

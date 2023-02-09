@@ -1,38 +1,50 @@
+import Markdown from 'markdown-to-jsx';
+import type { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
+import type { Rule } from '~/lib/fs/rules';
+// 🦁 Importe `getAllRules` et `getRule`
+// import { getAllRules, getRule } from '~/lib/fs/rules';
 
-export default function RulePage({ rule }: { rule: string }) {
+type RuleProps = {
+  rule: Rule;
+};
+
+export default function RulePage({ rule }: RuleProps) {
   return (
-    <div className="prose prose-invert mt-4">
+    <div className="prose prose-invert mt-4 p-2">
       <Link href="/solutions/rules">Back</Link>
-      {/* 🦁 Affiche le markdown à l'aide de notre library */}
+      <Markdown>{rule.body}</Markdown>
     </div>
   );
 }
 
-export async function getStaticPaths() {
-  // 🦁 Récupère les règles via getAllRules
+export const getStaticPaths: GetStaticPaths = async () => {
+  // 🦁 Utilise `getAllRules` pour récupérer toutes les règles
 
   return {
-    paths: {
-      // 🦁 Définit ceci dynamiquement en fonction de nos règles
-      params: {
-        rule: 'test',
-      },
-    },
+    // 🦁 Utilise `rules` pour générer les chemins possibles
+    paths: [] as any,
     fallback: false,
   };
-}
+};
 
-export async function getStaticProps({
-  params: { rule },
-}: {
-  params: { rule: string };
-}) {
-  // 🦁 Récupère le contenu de la règle via getRule
+export const getStaticProps: GetStaticProps<
+  RuleProps
+  // 🦁 Ajoute un type pour les paramètres de la route
+> = async ({ params }) => {
+  if (!params) {
+    return {
+      notFound: true,
+    };
+  }
+
+  // 🦁 Récupère le paramètre de la route
+  // 🦁 Utilise `getRule` pour récupérer le contenu de la règle
 
   return {
     props: {
-      rule: '# Test',
+      // 🦁 Ajoute la règle
+      rule: undefined as any,
     },
   };
-}
+};

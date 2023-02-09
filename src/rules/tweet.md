@@ -1,11 +1,37 @@
-# Tweeting rules
+---
+description: Rules about tweeting, to keep Twitter a safe and enjoyable place for everyone.
+---
 
-- Keep it short and sweet: Twitter has a 280-character limit, so try to be concise and to-the-point.
-- Use hashtags: Hashtags are a way to organize and categorize tweets, and they can help your tweets get more visibility.
-- Engage with your followers: Twitter is a social platform, so it's important to interact with your followers and respond to their tweets.
-- Be respectful: Twitter can be a fast-paced and sometimes heated platform, but it's important to remember to treat others with respect and kindness.
-- Protect your privacy: Be mindful of what you share on Twitter and consider using the platform's privacy settings to control what information is visible to others.
-- Follow the Twitter Rules: Twitter has a set of rules that outline what is and isn't allowed on the platform. Be sure to familiarize yourself with these rules and follow them to avoid having your account suspended or banned.
-- Add value: Try to tweet content that is useful, informative, or entertaining to your followers.
-- Use proper grammar and spelling: Twitter is a public platform, so it's important to make sure your tweets are easy to read and understand.
-- Be authentic: Twitter is a great place to connect with others and share your thoughts and ideas, so be genuine and authentic in your tweets.
+# Tweeting Rules
+
+As a user of our platform, you are responsible for the content you post in your tweets. To ensure that our platform is a safe and respectful space for all users, we have established the following rules:
+
+## Respectful Content
+
+- Your tweets must not contain hate speech, bullying, harassment, or any other form of abusive behavior.
+- Your tweets must not contain explicit or offensive content, such as graphic violence or adult material.
+- Your tweets must not contain sensitive or confidential information, such as personal information, trade secrets, or confidential business information.
+
+## No Spamming or Misleading Information
+
+- Spamming, including but not limited to sending the same tweet multiple times or promoting irrelevant or excessive content, is strictly prohibited.
+- Posting misleading information, including but not limited to false news or conspiracy theories, is strictly prohibited.
+- Any user who violates these rules may be subject to account suspension or termination.
+
+## Legal Compliance
+
+- Your tweets must comply with all applicable laws and regulations.
+- Engaging in illegal activity, such as fraud, identity theft, or the distribution of copyrighted material without permission, is strictly prohibited.
+- Any user who violates these rules may be subject to account suspension or termination and legal action.
+
+## Responsibility for Your Tweets
+
+- You are solely responsible for the content of your tweets.
+- You must ensure that your tweets do not infringe the intellectual property rights of others, such as copyrights or trademarks.
+- You must also ensure that your tweets do not violate any agreements or confidentiality obligations.
+
+> **Please note:** We reserve the right to remove any tweets that violate these rules and to take any necessary action against the user, including but not limited to account suspension or termination. The safety and respect of our users is of utmost importance, and we will take all necessary steps to protect it.
+
+---
+
+By using our platform to tweet, you agree to abide by these rules and to be responsible for the content of your tweets. If you have any questions or concerns about these rules, please don't hesitate to contact our support team.

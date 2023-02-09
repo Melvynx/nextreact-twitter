@@ -35,7 +35,7 @@ export default apiHandler({
         },
       });
 
-      const tweet = await getTweet(userId, tweetId);
+      const tweet = await getTweet(tweetId, userId);
 
       res.status(200).json({ tweet });
     },
@@ -60,7 +60,7 @@ export default apiHandler({
         },
       });
 
-      const tweet = await getTweet(userId, tweetId);
+      const tweet = await getTweet(tweetId, userId);
 
       res.status(200).json({ tweet });
     },
