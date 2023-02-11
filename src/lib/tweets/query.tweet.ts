@@ -5,6 +5,7 @@ import { TweetsScheme } from '../scheme/tweets';
 export const tweetKeys = {
   all: ['tweets'],
   getById: (id: string) => ['tweet', id],
+  getByUser: (id: string) => ['tweets', 'user', id],
 };
 
 const getTweets = async (signal?: AbortSignal, page = 0) =>

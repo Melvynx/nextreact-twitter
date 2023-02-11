@@ -51,6 +51,33 @@ export const getTweets = async (userId?: string, page = 0) => {
   return fixedTweet;
 };
 
+export const getUserTweets = async (
+  userId: string,
+  currentUserId?: string,
+  page = 0
+) => {
+  const tweets = await prisma.tweet.findMany({
+    where: {
+      userId,
+      tweetId: null,
+    },
+    skip: page * 10,
+    take: 10,
+    orderBy: {
+      createdAt: 'desc',
+    },
+    select: selectTweetQuery(currentUserId),
+  });
+
+  const fixedTweet = tweets.map((t) => ({
+    ...t,
+    liked: t.likes.some((l) => l.userId === currentUserId),
+    createdAt: t.createdAt.toISOString(),
+  }));
+
+  return fixedTweet;
+};
+
 export const getTweet = async (id: string, userId?: string) => {
   const tweet = await prisma.tweet.findUnique({
     where: {

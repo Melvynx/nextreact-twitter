@@ -21,16 +21,7 @@ export default apiHandler({
         return;
       }
 
-      const fixedTweet = {
-        ...tweet,
-        liked: tweet.likes.some((l) => l.userId === userId),
-        replies: tweet.replies.map((r) => ({
-          ...r,
-          liked: r.likes.some((l) => l.userId === userId),
-        })),
-      };
-
-      res.status(200).json({ tweet: fixedTweet });
+      res.status(200).json({ tweet: tweet });
     },
   },
 });

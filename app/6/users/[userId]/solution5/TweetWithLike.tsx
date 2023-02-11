@@ -2,24 +2,19 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
+import { LikeButton } from '~/components/tweets/LikeButton';
+import { RepliesButton } from '~/components/tweets/RepliesButton';
+import { Tweet } from '~/components/tweets/Tweet';
 import { client } from '~/lib/client/client';
-import type {
-  TlTweet,
-  TlTweets,
-  TlTweetsPage,
-  TweetView,
-} from '~/lib/scheme/tweets';
+import type { TlTweet, TlTweets, TlTweetsPage } from '~/lib/scheme/tweets';
 import { tweetKeys } from '~/lib/tweets/query.tweet';
-import { LikeButton } from './LikeButton';
-import { RepliesButton } from './RepliesButton';
-import { Tweet } from './Tweet';
 
 export const TweetWithLikes = ({
   tweet,
-  parentTweetId,
+  userId,
 }: {
   tweet: TlTweet;
-  parentTweetId?: string;
+  userId: string;
 }) => {
   return (
     <Tweet key={tweet.id} tweet={tweet}>
@@ -28,7 +23,7 @@ export const TweetWithLikes = ({
         tweetId={tweet.id}
         liked={tweet.liked}
         count={tweet._count.likes}
-        parentTweetId={parentTweetId}
+        userId={userId}
       />
     </Tweet>
   );
@@ -45,15 +40,13 @@ type LikeUpdateProps = {
   tweetId: string;
   count: number;
   liked: boolean;
-  parentTweetId?: string;
+  userId: string;
 };
 
-const Like = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
+const Like = ({ count, liked, tweetId, userId }: LikeUpdateProps) => {
   const queryClient = useQueryClient();
 
-  const queryKey = parentTweetId
-    ? tweetKeys.getById(parentTweetId)
-    : tweetKeys.all;
+  const queryKey = tweetKeys.getByUser(userId);
 
   const mutation = useMutation({
     mutationFn: () => {
@@ -64,26 +57,17 @@ const Like = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
 
       const previousValue = queryClient.getQueryData(queryKey);
 
-      if (parentTweetId) {
-        queryClient.setQueryData(queryKey, (old?: { tweet: TweetView }) =>
-          fakeUpdateParentTweet(tweetId, liked, old)
-        );
-      } else {
-        queryClient.setQueryData(
-          queryKey,
-          (old?: { pages: TlTweetsPage[] }) => {
-            if (!old) {
-              return old;
-            }
-            return {
-              pages: old.pages.map((page) => ({
-                ...page,
-                ...fakeUpdateTweet(tweetId, liked, { tweets: page.tweets }),
-              })),
-            };
-          }
-        );
-      }
+      queryClient.setQueryData(queryKey, (old?: { pages: TlTweetsPage[] }) => {
+        if (!old) {
+          return old;
+        }
+        return {
+          pages: old.pages.map((page) => ({
+            ...page,
+            ...fakeUpdateTweet(tweetId, liked, { tweets: page.tweets }),
+          })),
+        };
+      });
 
       return { previousValue };
     },
@@ -94,11 +78,9 @@ const Like = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
     onSuccess: () => {
       void queryClient.invalidateQueries({
         queryKey,
-        refetchPage: parentTweetId
-          ? undefined
-          : (lastPage: TlTweetsPage) => {
-              return lastPage.tweets.some((tweet) => tweet.id === tweetId);
-            },
+        refetchPage: (lastPage: TlTweetsPage) => {
+          return lastPage.tweets.some((tweet) => tweet.id === tweetId);
+        },
       });
     },
   });
@@ -115,44 +97,6 @@ const Like = ({ count, liked, tweetId, parentTweetId }: LikeUpdateProps) => {
       liked={liked}
     />
   );
-};
-
-const fakeUpdateParentTweet = (
-  tweetId: string,
-  liked: boolean,
-  old?: { tweet: TweetView }
-) => {
-  if (!old) {
-    return old;
-  }
-
-  const newLikes = liked
-    ? old.tweet._count.likes - 1
-    : old.tweet._count.likes + 1;
-
-  return {
-    tweet: {
-      ...old.tweet,
-      liked: tweetId === old.tweet.id ? !liked : old.tweet.liked,
-      _count: {
-        ...old.tweet._count,
-        likes: tweetId === old.tweet.id ? newLikes : old.tweet._count.likes,
-      },
-      replies: old.tweet.replies?.map((reply) => {
-        if (reply.id !== tweetId) {
-          return reply;
-        }
-        return {
-          ...reply,
-          liked: !liked,
-          _count: {
-            ...reply._count,
-            likes: liked ? reply._count.likes - 1 : reply._count.likes + 1,
-          },
-        };
-      }),
-    },
-  };
 };
 
 const fakeUpdateTweet = (

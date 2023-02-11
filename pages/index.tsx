@@ -38,27 +38,8 @@ export default function Home({ tweetId }: { tweetId: string }) {
             </NavigationLink>
           </div>
           <div className="flex flex-col gap-2">
-            <NavigationLink blue href={`/6/exercices`}>
+            <NavigationLink blue href={`/6/users`}>
               Exercice 6
-            </NavigationLink>
-
-            <NavigationLink href={`/6/solution1`}>
-              Solution 6 partie 1
-            </NavigationLink>
-            <NavigationLink href={`/6/solution2`}>
-              Solution 6 partie 2
-            </NavigationLink>
-            <NavigationLink href={`/6/solution3`}>
-              Solution 6 partie 3
-            </NavigationLink>
-            <NavigationLink href={`/6/solution4`}>
-              Solution 6 partie 4
-            </NavigationLink>
-            <NavigationLink href={`/6/solution5`}>
-              Solution 6 partie 5
-            </NavigationLink>
-            <NavigationLink href={`/6/solution6`}>
-              Solution 6 partie 6
             </NavigationLink>
           </div>
         </div>
