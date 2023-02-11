@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
-import { cookies } from 'next/headers';
 import TwitterLayout from '~/components/TwitterLayout';
+import { getUser } from '~/db/users';
 
 export default async function User({
   params,
@@ -11,7 +11,7 @@ export default async function User({
 }) {
   // 🦁 Récupérer le user
   // 💡 await getUser(params.userId);
-  const user = undefined as any;
+  const user = await getUser(params.userId);
 
   if (!user) {
     return;
@@ -20,9 +20,7 @@ export default async function User({
   // 🦁 Récupérer le userId dans les cookies
   // 💡 Le nom de notre cookie est `userId`, suit la documentation.
   // 🦁 Créer une instance de cookie (https://beta.nextjs.org/docs/api-reference/cookies)
-  const nextCookies = cookies();
-  const userIdCookie = nextCookies.get('userId');
-  const userId = userIdCookie?.value ?? '';
+  const userId = '';
 
   // 🦁 Définir si le currentUserId est le même que le userId passé en paramètre
   const isCurrentUser = false;
