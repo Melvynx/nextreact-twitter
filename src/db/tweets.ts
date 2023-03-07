@@ -1,33 +1,35 @@
+import type { Prisma } from '@prisma/client';
 import { prisma } from './prisma';
 
-const selectTweetQuery = (userId?: string) => ({
-  id: true,
-  content: true,
-  createdAt: true,
-  user: {
-    select: {
-      id: true,
-      displayName: true,
-      username: true,
-      avatarUrl: true,
+const selectTweetQuery = (userId?: string) =>
+  ({
+    id: true,
+    content: true,
+    createdAt: true,
+    user: {
+      select: {
+        id: true,
+        displayName: true,
+        username: true,
+        avatarUrl: true,
+      },
     },
-  },
-  likes: {
-    where: {
-      userId,
+    likes: {
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        userId: true,
+      },
     },
-    select: {
-      id: true,
-      userId: true,
+    _count: {
+      select: {
+        likes: true,
+        replies: true,
+      },
     },
-  },
-  _count: {
-    select: {
-      likes: true,
-      replies: true,
-    },
-  },
-});
+  } satisfies Prisma.TweetSelect);
 
 export const getTweets = async (userId?: string, page = 0) => {
   const tweets = await prisma.tweet.findMany({
