@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const main = async () => {
   // loop for 10 times
-  const usersPromises = [];
+  const users = [];
   for (let i = 0; i < 10; i++) {
     const user = {
       username: faker.internet.userName(),
@@ -15,17 +15,15 @@ const main = async () => {
       location: faker.address.city(),
       email: faker.internet.email(),
     };
-    usersPromises.push(
-      prisma.user.create({
-        data: user,
-      })
-    );
+
+    // eslint-disable-next-line no-await-in-loop
+    const dbUser = await prisma.user.create({
+      data: user,
+    });
+
+    users.push(dbUser);
   }
 
-  const users = await Promise.all(usersPromises);
-
-  // loop for 100 times
-  const tweetsPromises = [];
   for (let i = 0; i < 100; i++) {
     const randomUserIndex = faker.datatype.number({
       min: 0,
@@ -41,14 +39,11 @@ const main = async () => {
       userId: users[randomUserIndex].id,
     };
 
-    tweetsPromises.push(
-      prisma.tweet.create({
-        data: tweet,
-      })
-    );
+    // eslint-disable-next-line no-await-in-loop
+    await prisma.tweet.create({
+      data: tweet,
+    });
   }
-
-  await Promise.all(tweetsPromises);
 };
 
 main()
