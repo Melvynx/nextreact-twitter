@@ -27,8 +27,8 @@ export default function FetchAllTweets() {
     fetchNextPage,
   } = useInfiniteQuery({
     queryKey: ['tweets'],
-    queryFn: ({ signal, pageParam }) => getTweets(signal, pageParam),
-    getNextPageParam: (lastPage) => lastPage.nextPage,
+    queryFn: ({ signal, pageParam }) => getTweets(signal, pageParam ?? 0),
+    getNextPageParam: (lastPage) => lastPage.nextPage ?? 0,
   });
 
   if (isLoading) {
@@ -38,7 +38,6 @@ export default function FetchAllTweets() {
   if (isError) {
     return <Error error="Couldn't fetch tweet..." reset={() => refetch()} />;
   }
-
   const tweets = data.pages.flatMap((page) => page.tweets);
 
   const nextPageStatus = hasNextPage ? 'Next Page' : 'There is not more tweets';
