@@ -42,12 +42,6 @@ cd nextreact-twitter
 pnpm install
 ```
 
-Pour lancer le projet :
-
-```bash
-pnpm dev
-```
-
 ## Setup de la database
 
 J'utililise [prisma](https://www.prisma.io/) pour la gestion de la database.
@@ -59,6 +53,12 @@ Pour setup la database tu peux lancer :
 
 ```bash
 pnpm prisma:setup
+```
+
+## Lancer le projet
+
+```bash
+pnpm dev
 ```
 
 ## Construction des exercices
