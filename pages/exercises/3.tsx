@@ -73,17 +73,17 @@ const Like = ({ count, liked, tweetId }: LikeUpdateProps) => {
   // 🦁 Utilise useQueryClient
 
   // 🦁 Ajoute la fonction onClick
-  // * met isLoading à true
+  // * mettre isLoading à true
   // * utiliser la fonction likeTweet
-  // * si c'est un succès (`.then`) : invalidé la query des tweets (tu pourras trouver la clé dans [query.tweet.ts](src/lib/tweets/query.tweet.ts) et l'importer)
-  // * si c'est un échec (`.catch`) : affiché un message d'erreur
+  // * si c'est un succès (`.then`) : invalider la query des tweets (tu pourras trouver la clé dans [query.tweet.ts](src/lib/tweets/query.tweet.ts) et l'importer)
+  // * si c'est un échec (`.catch`) : afficher un message d'erreur
   // * finalement (`.finally`) on va définir le state `isLoading` à false et le mettre à true pendant
 
   return (
     <LikeButton
       count={count}
       onClick={() => {
-        // 🦁 Appel la fonction onClick
+        // 🦁 Appelle la fonction onClick
       }}
       liked={liked}
     />
