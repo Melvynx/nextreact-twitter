@@ -7,7 +7,7 @@ export default function TweetId({ tweet }: { tweet: TweetView }) {
     <TwitterLayout>
       {/* 🦁 Affiche le TweetWithLikes */}
       {/* 🦁 Affiche le composant pour ajouter un Tweet (AddTweet) */}
-      {/* 🦁 Affiche les réponses du tweet (tweet.replies), ils sont du même type que Tweet dans le composant TweetWithLikes avec parentTweetId étant tweet.id */}
+      {/* 🦁 Affiche les réponses du tweet (tweet.replies), elles sont du même type que Tweet dans le composant TweetWithLikes avec parentTweetId étant tweet.id */}
     </TwitterLayout>
   );
 }
