@@ -18,7 +18,7 @@ export default async function User({
   }
 
   // 🦁 Récupérer le userId dans les cookies
-  // 💡 Le nom de notre cookie est `userId`, suit la documentation.
+  // 💡 Le nom de notre cookie est `userId`, suis la documentation.
   // 🦁 Créer une instance de cookie (https://beta.nextjs.org/docs/api-reference/cookies)
   const userId = '';
 

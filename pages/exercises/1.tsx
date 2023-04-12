@@ -12,7 +12,7 @@ const notifyFailed = () => toast.error("Couldn't fetch tweet...");
 
 // 🦁 Créer un schéma zod appelé TweetsScheme qui correspond à la réponse de l'API
 // Tu peux `console.log` la réponse de l'API pour voir la structure attendue
-// Tu pourrais utiliser zod transform pour modifié directement dans le schéma la date
+// Tu pourrais utiliser zod transform pour modifier directement dans le schéma la date
 // 💡 const TweetsScheme = z.object({...
 
 export default function FetchAllTweets() {
@@ -21,7 +21,7 @@ export default function FetchAllTweets() {
   useEffect(() => {
     // 🦁 Créer un abort controller pour annuler la requête si l'utilisateur quitte la page
 
-    // 🦁 Passe le signal à la requête fetch
+    // 🦁 Passer le signal à la requête fetch
     fetch('/api/tweets') // ℹ️ tu peux remplacer l'url par `/api/tweets?error=erreur` pour voir le problème
       .then((res) => res.json())
       .then((data) => {
