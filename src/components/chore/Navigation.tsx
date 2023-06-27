@@ -21,7 +21,7 @@ export default function Exercise({
     <div className="flex flex-col gap-2">
       <Link
         className="font-bold text-blue-300 hover:underline"
-        href={`/exercises${baseUrl}/${number}`}
+        href={`/exercices${baseUrl}/${number}`}
       >
         Exercise {number}
       </Link>

@@ -29,7 +29,7 @@ export default function Home({ tweetId }: { tweetId: string }) {
             Exercice 4
           </NavigationLink>
           <div className="flex flex-col gap-2">
-            <NavigationLink blue href={`/exercises/rules`}>
+            <NavigationLink blue href={`/exercices/rules`}>
               Exercice 5
             </NavigationLink>
 
