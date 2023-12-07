@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import { prisma } from '~/db/prisma';
 import { useUser } from '../src/hooks/UserProvider';
 
@@ -12,9 +13,13 @@ export default function Login({ emails }: { emails: { email: string }[] }) {
     const formDatas = new FormData(e.currentTarget);
     const email = formDatas.get('email') as string;
     if (!email) return;
-    login(email).then(() => {
-      router.push('/');
-    });
+    login(email)
+      .then(() => {
+        void router.push('/');
+      })
+      .catch(() => {
+        toast('Email not found');
+      });
   };
 
   return (
