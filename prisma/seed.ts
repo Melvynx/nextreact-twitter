@@ -10,9 +10,9 @@ const main = async () => {
     const user = {
       username: faker.internet.userName(),
       avatarUrl: faker.image.avatar(),
-      displayName: faker.name.firstName(),
+      displayName: faker.person.firstName(),
       bio: faker.lorem.paragraph(),
-      location: faker.address.city(),
+      location: faker.location.city(),
       email: faker.internet.email(),
     };
 
@@ -25,12 +25,12 @@ const main = async () => {
   }
 
   for (let i = 0; i < 100; i++) {
-    const randomUserIndex = faker.datatype.number({
+    const randomUserIndex = faker.number.int({
       min: 0,
       max: users.length - 1,
     });
 
-    const randomWorldCount = faker.datatype.number({
+    const randomWorldCount = faker.number.int({
       min: 5,
       max: 12,
     });

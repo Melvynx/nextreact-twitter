@@ -55,9 +55,15 @@ export const getStaticProps = async () => {
     },
   });
 
+  if (!tweetId) {
+    return {
+      props: {},
+    };
+  }
+
   return {
     props: {
-      tweetId: tweetId?.id,
+      tweetId: tweetId.id,
     },
   };
 };
